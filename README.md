@@ -7,20 +7,33 @@ API backend para o aplicativo FitTrack, desenvolvida com Node.js e Express.
 ### Pré-requisitos
 - Node.js (versão 18 ou superior)
 - npm ou yarn
+- MongoDB (versão 6.0 ou superior) - [Guia de instalação](./MONGODB_SETUP.md)
 
 ### Instalação
 
-1. Instale as dependências:
+1. Configure o MongoDB:
+   - Instale o MongoDB seguindo o [guia de instalação](./MONGODB_SETUP.md)
+   - Certifique-se de que o MongoDB está rodando
+
+2. Crie um arquivo `.env` baseado no `.env.example`:
+```bash
+# O arquivo .env já está criado, mas você pode verificar:
+cat .env
+```
+
+   O arquivo `.env` deve conter:
+   ```
+   PORT=3000
+   NODE_ENV=development
+   MONGODB_URI=mongodb://localhost:27017/fittrack
+   ```
+
+3. Instale as dependências:
 ```bash
 npm install
 ```
 
-2. Crie um arquivo `.env` baseado no `.env.example`:
-```bash
-cp .env.example .env
-```
-
-3. Inicie o servidor:
+4. Inicie o servidor:
 ```bash
 # Se você usa nvm, carregue-o primeiro:
 source ~/.nvm/nvm.sh
@@ -136,30 +149,42 @@ Verifica se a API está funcionando.
 ```
 FitTrack-back/
 ├── src/
-│   ├── controllers/      # Controladores das rotas
+│   ├── config/          # Configurações
+│   │   └── database.js  # Configuração do MongoDB
+│   ├── controllers/     # Controladores das rotas
 │   │   ├── routineController.js
 │   │   └── workoutDayController.js
+│   ├── models/          # Models do Mongoose
+│   │   ├── User.js
+│   │   ├── Routine.js
+│   │   ├── WorkoutDay.js
+│   │   ├── Exercise.js
+│   │   └── index.js
 │   ├── routes/          # Definição das rotas
 │   │   ├── routineRoutes.js
 │   │   └── workoutDayRoutes.js
 │   ├── data/            # Dados mock/inicial
 │   │   └── mockData.js
 │   └── server.js        # Arquivo principal do servidor
-├── .env.example         # Exemplo de variáveis de ambiente
+├── .env                 # Variáveis de ambiente
 ├── .gitignore
 ├── package.json
-└── README.md
+├── README.md
+└── MONGODB_SETUP.md     # Guia de instalação do MongoDB
 ```
 
 ## 🔧 Tecnologias Utilizadas
 
 - **Express.js**: Framework web para Node.js
+- **MongoDB**: Banco de dados NoSQL
+- **Mongoose**: ODM (Object Document Mapper) para MongoDB
+- **bcryptjs**: Biblioteca para hash de senhas
 - **CORS**: Middleware para habilitar CORS
 - **dotenv**: Gerenciamento de variáveis de ambiente
 
 ## 📝 Próximos Passos
 
-- [ ] Integração com banco de dados (MongoDB/PostgreSQL)
+- [x] Integração com banco de dados (MongoDB)
 - [ ] Autenticação e autorização de usuários
 - [ ] Sistema de histórico de treinos
 - [ ] Endpoints para gerenciar exercícios
