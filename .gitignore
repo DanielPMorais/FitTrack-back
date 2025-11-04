@@ -6,3 +6,5 @@ dist/
 build/
 DATABASE_PLAN.md
 INTEGRATION.md
+MONGODB_VIEW.md
+QUICK_VIEW.md
