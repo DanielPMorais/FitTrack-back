@@ -33,7 +33,20 @@ cat .env
 npm install
 ```
 
-4. Inicie o servidor:
+4. Popule o banco de dados com dados iniciais:
+```bash
+# Se você usa nvm, carregue-o primeiro:
+source ~/.nvm/nvm.sh
+
+# Executar o seed
+npm run seed
+```
+
+   Isso criará:
+   - Usuário admin: `admin@example.com` / `Admin@123`
+   - 2 rotinas de treino com todos os dados do mock
+
+5. Inicie o servidor:
 ```bash
 # Se você usa nvm, carregue-o primeiro:
 source ~/.nvm/nvm.sh
