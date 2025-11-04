@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDatabase } from './config/database.js';
+import authRoutes from './routes/authRoutes.js';
 import routineRoutes from './routes/routineRoutes.js';
 import workoutDayRoutes from './routes/workoutDayRoutes.js';
 
@@ -24,6 +25,7 @@ app.get('/health', (req, res) => {
 });
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/routines', routineRoutes);
 app.use('/api/workout-days', workoutDayRoutes);
 
