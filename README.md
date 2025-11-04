@@ -144,6 +144,108 @@ Marca um treino como completado, atualizando a data `lastCompleted`.
 }
 ```
 
+### Autenticação
+
+#### POST /api/auth/register
+Registra um novo usuário.
+
+**Body:**
+```json
+{
+  "name": "João Silva",
+  "email": "joao@example.com",
+  "password": "SenhaSegura123!"
+}
+```
+
+**Resposta:**
+```json
+{
+  "message": "Usuário criado com sucesso",
+  "user": {
+    "id": "...",
+    "name": "João Silva",
+    "email": "joao@example.com"
+  },
+  "token": "jwt_token_here"
+}
+```
+
+#### POST /api/auth/login
+Autentica um usuário.
+
+**Body:**
+```json
+{
+  "email": "joao@example.com",
+  "password": "SenhaSegura123!"
+}
+```
+
+**Resposta:**
+```json
+{
+  "message": "Login realizado com sucesso",
+  "user": {
+    "id": "...",
+    "name": "João Silva",
+    "email": "joao@example.com"
+  },
+  "token": "jwt_token_here"
+}
+```
+
+#### PATCH /api/auth/profile
+Atualiza nome e/ou email do usuário autenticado. **Requer autenticação.**
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Body:**
+```json
+{
+  "name": "João Silva Atualizado",
+  "email": "novo@example.com"
+}
+```
+
+**Resposta:**
+```json
+{
+  "message": "Perfil atualizado com sucesso",
+  "user": {
+    "id": "...",
+    "name": "João Silva Atualizado",
+    "email": "novo@example.com"
+  }
+}
+```
+
+#### PATCH /api/auth/password
+Atualiza a senha do usuário autenticado. **Requer autenticação.**
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Body:**
+```json
+{
+  "currentPassword": "SenhaAtual123!",
+  "newPassword": "NovaSenha456@"
+}
+```
+
+**Resposta:**
+```json
+{
+  "message": "Senha atualizada com sucesso"
+}
+```
+
 ### Health Check
 
 #### GET /health
@@ -165,8 +267,11 @@ FitTrack-back/
 │   ├── config/          # Configurações
 │   │   └── database.js  # Configuração do MongoDB
 │   ├── controllers/     # Controladores das rotas
+│   │   ├── authController.js
 │   │   ├── routineController.js
 │   │   └── workoutDayController.js
+│   ├── middleware/      # Middlewares
+│   │   └── authMiddleware.js  # Middleware de autenticação
 │   ├── models/          # Models do Mongoose
 │   │   ├── User.js
 │   │   ├── Routine.js
@@ -174,8 +279,11 @@ FitTrack-back/
 │   │   ├── Exercise.js
 │   │   └── index.js
 │   ├── routes/          # Definição das rotas
+│   │   ├── authRoutes.js
 │   │   ├── routineRoutes.js
 │   │   └── workoutDayRoutes.js
+│   ├── scripts/         # Scripts utilitários
+│   │   └── seed.js      # Seed do banco de dados
 │   ├── data/            # Dados mock/inicial
 │   │   └── mockData.js
 │   └── server.js        # Arquivo principal do servidor
