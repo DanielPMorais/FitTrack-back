@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { connectDatabase } from './config/database.js';
 import routineRoutes from './routes/routineRoutes.js';
 import workoutDayRoutes from './routes/workoutDayRoutes.js';
 
@@ -8,6 +9,9 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Conectar ao banco de dados
+connectDatabase();
 
 // Middleware
 app.use(cors());
