@@ -2,11 +2,13 @@ import { Routine, WorkoutDay, Exercise } from '../models/index.js';
 
 /**
  * GET /api/routines
- * Retorna todas as rotinas de treino
+ * Retorna todas as rotinas de treino do usuário autenticado
  */
 export const getAllRoutines = async (req, res) => {
   try {
-    const routines = await Routine.find()
+    const userId = req.userId;
+
+    const routines = await Routine.find({ userId })
       .populate('userId', 'name email')
       .sort({ createdAt: -1 })
       .lean();
@@ -36,19 +38,21 @@ export const getAllRoutines = async (req, res) => {
 
 /**
  * GET /api/routines/:routineId
- * Retorna uma rotina específica por ID
+ * Retorna uma rotina específica por ID (apenas se pertencer ao usuário autenticado)
  */
 export const getRoutineById = async (req, res) => {
   try {
     const { routineId } = req.params;
-    const routine = await Routine.findById(routineId)
+    const userId = req.userId;
+
+    const routine = await Routine.findOne({ _id: routineId, userId })
       .populate('userId', 'name email')
       .lean();
 
     if (!routine) {
       return res.status(404).json({
         error: 'Routine not found',
-        message: `Routine with ID ${routineId} does not exist`,
+        message: `Routine with ID ${routineId} does not exist or you don't have permission to access it`,
       });
     }
 

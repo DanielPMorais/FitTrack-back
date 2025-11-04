@@ -306,7 +306,7 @@ FitTrack-back/
 ## 📝 Próximos Passos
 
 - [x] Integração com banco de dados (MongoDB)
-- [ ] Autenticação e autorização de usuários
+- [x] Autenticação e autorização de usuários
 - [ ] Sistema de histórico de treinos
 - [ ] Endpoints para gerenciar exercícios
 - [ ] Sistema de progresso e estatísticas

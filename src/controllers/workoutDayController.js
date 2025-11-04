@@ -1,18 +1,30 @@
-import { WorkoutDay, Exercise } from '../models/index.js';
+import { WorkoutDay, Exercise, Routine } from '../models/index.js';
 
 /**
  * GET /api/workout-days/:workoutId
  * Retorna um dia de treino específico por ID (com todos os exercícios)
+ * Verifica se o workout day pertence a uma rotina do usuário autenticado
  */
 export const getWorkoutDayById = async (req, res) => {
   try {
     const { workoutId } = req.params;
+    const userId = req.userId;
+
     const workoutDay = await WorkoutDay.findById(workoutId).lean();
 
     if (!workoutDay) {
       return res.status(404).json({
         error: 'Workout day not found',
         message: `Workout day with ID ${workoutId} does not exist`,
+      });
+    }
+
+    // Verificar se a rotina pertence ao usuário autenticado
+    const routine = await Routine.findOne({ _id: workoutDay.routineId, userId }).lean();
+    if (!routine) {
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: 'You do not have permission to access this workout day',
       });
     }
 
@@ -53,16 +65,28 @@ export const getWorkoutDayById = async (req, res) => {
 /**
  * PATCH /api/workout-days/:workoutId/complete
  * Marca um treino como completado (atualiza lastCompleted)
+ * Verifica se o workout day pertence a uma rotina do usuário autenticado
  */
 export const completeWorkoutDay = async (req, res) => {
   try {
     const { workoutId } = req.params;
+    const userId = req.userId;
+
     const workoutDay = await WorkoutDay.findById(workoutId);
 
     if (!workoutDay) {
       return res.status(404).json({
         error: 'Workout day not found',
         message: `Workout day with ID ${workoutId} does not exist`,
+      });
+    }
+
+    // Verificar se a rotina pertence ao usuário autenticado
+    const routine = await Routine.findOne({ _id: workoutDay.routineId, userId });
+    if (!routine) {
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: 'You do not have permission to complete this workout day',
       });
     }
 
